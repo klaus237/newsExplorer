@@ -3,14 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://klaus237.github.io/se_project_react/",
+  "homepage": "https://wear.jumpingcrab.com",
   "scripts": {
     "dev": "vite --open",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "npm run build && scp -r ./dist/* klaus@wear.jumpingcrab.com:/home/klaus/frontend"
   },
   "dependencies": {
     "react": "^18.3.1",

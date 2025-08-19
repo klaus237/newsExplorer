@@ -1,0 +1,49 @@
+/* About Block */
+.about {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
+  background-color: #fff;
+}
+
+.about__imageContainer {
+  flex-shrink: 0;
+  margin-right: 40px;
+}
+
+.about__image {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.about__content {
+  max-width: 600px;
+}
+
+.about__title {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.about__text {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+/* Media Queries pour About */
+@media (max-width: 768px) {
+  .about {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .about__imageContainer {
+    margin-right: 0;
+    margin-bottom: 30px;
+  }
+}

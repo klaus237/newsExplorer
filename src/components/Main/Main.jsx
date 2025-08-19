@@ -1,37 +1,56 @@
-import "./Main.css";
-import WeatherCard from "../WeatherCard/WeatherCard";
-import ItemCard from "../ItemCard/ItemCard";
-import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext";
-import { useContext } from "react";
+import React from "react";
+import About from "../About/About";
+import NewsCardList from "../NewsCardList/NewsCardList";
+import Preloader from "../Preloader/Preloader";
+import NotFound from "../NotFound/NotFound";
+// REMOVE: import styles from "./Main.module.css";
+// USE THIS:
+import "./Main.css"; // Correct, as per your setup
 
-function Main({ weatherData, handleCardClick, clothingItems, onCardLike }) {
-  const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
+function Main({
+  isLoading,
+  newsArticles,
+  isNotFound,
+  hasSearched,
+  isLoggedIn,
+  savedArticleIds,
+  onSaveArticle,
+}) {
+  const renderContent = () => {
+    if (isLoading) {
+      return <Preloader />;
+    } else if (isNotFound) {
+      return <NotFound />;
+    } else if (hasSearched && newsArticles.length === 0) {
+      return null;
+    } else if (newsArticles.length > 0) {
+      return (
+        <section className="main__newsResults">
+          {" "}
+          {/* Changed from styles.main__newsResults */}
+          <h2 className="main__newsTitle">Search results</h2>{" "}
+          {/* Changed from styles.main__newsTitle */}
+          <NewsCardList
+            articles={newsArticles}
+            isLoggedIn={isLoggedIn}
+            savedArticleIds={savedArticleIds}
+            onSaveArticle={onSaveArticle}
+          />
+          <button className="main__showMoreButton">Show more</button>{" "}
+          {/* Changed from styles.main__showMoreButton */}
+        </section>
+      );
+    } else {
+      return null;
+    }
+  };
 
   return (
-    <main>
-      <WeatherCard weatherData={weatherData} />
-      <section className="cards">
-        <p className="cards__text">
-          Today is {weatherData.temp[currentTemperatureUnit]} &deg;{" "}
-          {currentTemperatureUnit} / you may want to wear:
-        </p>
-        <ul className="cards__list">
-          {clothingItems
-            .filter((item) => {
-              return item.weather === weatherData.type;
-            })
-            .map((item) => {
-              return (
-                <ItemCard
-                  key={item._id}
-                  item={item}
-                  onCardClick={handleCardClick}
-                  onCardLike={onCardLike}
-                />
-              );
-            })}
-        </ul>
-      </section>
+    <main className="main">
+      {" "}
+      {/* Changed from styles.main */}
+      {renderContent()}
+      <About />
     </main>
   );
 }

@@ -1,312 +1,239 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
-import "./App.css";
-import { coordinates, APIkey } from "../../utils/constants";
+import React, { useState, useCallback, useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom"; // <-- Importez useNavigate
+
 import Header from "../Header/Header";
 import Main from "../Main/Main";
-import ItemModal from "../ItemModal/ItemModal";
-import { filterWeatherData, getWeather } from "../../utils/weatherApi";
 import Footer from "../Footer/Footer";
-import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext";
-import AddItemModal from "../AddItemModal/AddItemModal";
-import Profile from "../Profile/Profile";
-import {
-  getItems,
-  addItem,
-  deleteItem,
-  updateUserInfo,
-  addCardLike,
-  removeCardLike,
-} from "../../utils/Api";
-import ConfirmationModal from "../ConfirmationModal/ConfirmationModal";
-import { signup, signin, checkToken } from "../../utils/auth";
-import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
-import RegisterModal from "../RegisterModal/RegisterModal";
-import LoginModal from "../LoginModal/LoginModal";
-import ModalWithForm from "../ModalWithForm/ModalWithForm";
-import EditProfileModal from "../EditProfileModal/EditProfileModal";
-import CurrentUserContext from "../../contexts/CurrentUserContext";
+import SavedNews from "../SavedNews/SavedNews";
+import "./App.css";
+
+// Importez vos images ici
+import image1 from "../../assets/image_04.png";
+import image2 from "../../assets/image_07.png";
+import image3 from "../../assets/image_08.png";
+import image4 from "../../assets/image_08.png"; // Example for a saved article
+import image5 from "../../assets/image_08.png";
+import mainBgImage from "../../assets/background.png";
+// import logoutIconDark from '../../images/logout-icon-dark.svg'; // Non nécessaire ici si l'icône est gérée via CSS
 
 function App() {
-  const navigate = useNavigate();
-  //weather
-  const [weatherData, setWeatherData] = useState({
-    type: "",
-    temp: { F: 999 },
-    city: "",
-  });
-  const [clothingItems, setClothingItems] = useState([]); //defaultClothingItems
-  const [activeModal, setActiveModal] = useState("");
-  const [selectedCard, setSelectedCard] = useState({});
-  const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
-
-  //Authentification
-  const [currentUser, setCurrentUser] = useState(undefined);
+  const [isLoading, setIsLoading] = useState(false);
+  const [newsArticles, setNewsArticles] = useState([]);
+  const [isNotFound, setIsNotFound] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState("Elise");
+  const [savedArticles, setSavedArticles] = useState([]);
 
-  const handleToggleSwitchChange = () => {
-    setCurrentTemperatureUnit(currentTemperatureUnit === "F" ? "C" : "F");
-  };
+  const navigate = useNavigate(); // <-- Initialisez useNavigate
 
-  const handleEditProfile = () => {
-    setActiveModal("edit-profile");
-  };
-  //register new user
-  const handleRegister = ({ name, avatar, email, password }) => {
-    signup({ name, avatar, email, password })
-      .then(() => handleLogin({ email, password })) // auto login après inscription
-      .catch((err) => console.error("Erreur inscription:", err));
-  };
+  useEffect(() => {
+    setSavedArticles([
+      {
+        id: "saved_article_1",
+        image: image1,
+        date: "November 4, 2020",
+        title: "Everyone Needs a Special 'Sit Spot' in Nature",
+        text: "Ever since I read Richard Louv’s influential book, “Last Child in the Woods,” the idea of having a special “sit spot” has stuck with me. This on-the-go world in which everyone — both adults and children — spends so much time on their phone, it’s not surprising.",
+        source: "TREEHUGGER",
+        keyword: "Nature",
+      },
+      {
+        id: "saved_article_2",
+        image: image2,
+        date: "February 19, 2019",
+        title: "Nature makes you better",
+        text: "We all know how good nature can make us feel. The tranquil sound of birds chirping and the gentle, green shade of a forest, the way dappled sunlight dances through leaves, can all lower blood pressure and reduce stress.",
+        source: "NATIONAL GEOGRAPHIC",
+        keyword: "Nature",
+      },
+      {
+        id: "saved_article_3",
+        image: image3,
+        date: "October 19, 2020",
+        title: "Nostalgic Photos of Tourists In U.S. National Parks",
+        text: "Uri Loveild Golman and Helle Lewelild Golman are the authors of the book “The Unfinished World: A project and book they call their love letter to...",
+        source: "NATIONAL GEOGRAPHIC",
+        keyword: "Yellowstone",
+      },
+      {
+        id: "saved_article_4",
+        image: image4,
+        date: "November 4, 2020",
+        title: "Grand Teton Renews Historic Crest Trail",
+        text: "The linking together of the Cascade and Death Canyon Trails, Wyoming’s two most popular trails, will continue next summer, thanks to a grant from the National Park Service and the Wyoming Office of Outdoor Recreation.",
+        source: "NATIONAL PARKS TRAVELER",
+        keyword: "Parks",
+      },
+      {
+        id: "saved_article_5",
+        image: image5,
+        date: "March 16, 2020",
+        title: "Scientists Don't Know Why Polaris Is So Weird",
+        text: "Humans have long relied on the starry sky to push into new frontiers, but to the very edge of the Milky Way and back, way from home, how Even animals look to the stars to guide them.",
+        source: "TREEHUGGER",
+        keyword: "Photography",
+      },
+    ]);
+  }, []);
 
-  //connect user
-  const handleLogin = ({ email, password }) => {
-    signin({ email, password })
-      .then((data) => {
-        localStorage.setItem("jwt", data.token);
-        setIsLoggedIn(true);
-        checkToken(data.token).then((user) => {
-          setCurrentUser(user || null);
-          closeActiveModal();
-          navigate("/profile");
+  const savedArticleIds = new Set(savedArticles.map((article) => article.id));
+
+  const handleToggleSavedArticle = useCallback(
+    (articleToToggle) => {
+      if (isLoggedIn) {
+        setSavedArticles((prevSavedArticles) => {
+          const isCurrentlySaved = prevSavedArticles.some(
+            (article) => article.id === articleToToggle.id
+          );
+
+          if (isCurrentlySaved) {
+            console.log(`Removing article: ${articleToToggle.title}`);
+            return prevSavedArticles.filter(
+              (article) => article.id !== articleToToggle.id
+            );
+          } else {
+            console.log(`Saving article: ${articleToToggle.title}`);
+            const keywordToAdd = articleToToggle.keyword || "General";
+            return [
+              ...prevSavedArticles,
+              { ...articleToToggle, keyword: keywordToAdd },
+            ];
+          }
         });
-      })
-      .catch((err) => console.error("Erreur connexion:", err));
-  };
-
-  const handleUpdateUser = ({ name, avatar }) => {
-    updateUserInfo({ name, avatar })
-      .then((newUser) => {
-        setCurrentUser(newUser);
-        closeActiveModal();
-      })
-      .catch((err) => console.error(err));
-  };
-
-  //signOut
-  const handleLogout = () => {
-    localStorage.removeItem("jwt");
-    setIsLoggedIn(false);
-    setCurrentUser(null);
-    navigate("/");
-  };
-
-  const handleAddClick = () => {
-    if (!isLoggedIn) {
-      setActiveModal("login");
-    } else {
-      setActiveModal("add-garment");
-    }
-  };
-
-  const handleCardClick = (card) => {
-    setActiveModal("preview");
-    setSelectedCard(card);
-  };
-  const closeActiveModal = () => {
-    setActiveModal("");
-  };
-
-  const handleAddItemModalSubmit = ({ name, imageUrl, weather }) => {
-    handleAddItem({ name, imageUrl, weather });
-  };
-
-  const [showPreview, setShowPreview] = useState(false);
-  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
-
-  function handleAddItem(newItem) {
-    addItem(newItem)
-      .then((createdItem) => {
-        setClothingItems([createdItem, ...clothingItems]);
-        closeActiveModal();
-      })
-      .catch((err) => console.error("Failed to add item:", err));
-  }
-  function handleDeleteClick(card) {
-    setSelectedCard(card);
-    setShowPreview(false);
-    setShowConfirmDelete(true);
-  }
-
-  function handleConfirmDelete() {
-    deleteItem(selectedCard._id)
-      .then(() => {
-        setClothingItems((prev) =>
-          prev.filter((item) => item._id !== selectedCard._id)
-        );
-        setShowConfirmDelete(false);
-        setSelectedCard(null);
-      })
-      .catch((err) => {
-        console.error("Failed to delete item:", err);
-      });
-  }
-
-  const handleCardLike = ({ _id, likes }) => {
-    const token = localStorage.getItem("jwt");
-    if (!token || !currentUser) return;
-
-    const isLiked = likes.some((likeUser) => {
-      // Si likeUser est un objet, comparer _id, sinon comparer directement
-      if (typeof likeUser === "object" && likeUser._id) {
-        return likeUser._id.toString() === currentUser._id;
+      } else {
+        console.log("User not logged in. Please sign in to save articles.");
       }
-      return likeUser.toString() === currentUser._id;
-    });
+    },
+    [isLoggedIn]
+  );
 
-    if (!isLiked) {
-      addCardLike(_id, token)
-        .then((updatedCard) => {
-          setClothingItems((cards) =>
-            cards.map((item) => (item._id === _id ? updatedCard : item))
-          );
-        })
-        .catch((err) => console.error(err));
-    } else {
-      removeCardLike(_id, token)
-        .then((updatedCard) => {
-          setClothingItems((cards) =>
-            cards.map((item) => (item._id === _id ? updatedCard : item))
-          );
-        })
-        .catch((err) => console.error(err));
-    }
-  };
+  const handleSearch = useCallback((query) => {
+    setHasSearched(true);
+    setIsLoading(true);
+    setNewsArticles([]);
+    setIsNotFound(false);
 
-  useEffect(() => {
-    getWeather(coordinates, APIkey)
-      .then((data) => {
-        // setWeatherData({...weatherData, })
-        const filterData = filterWeatherData(data);
-        setWeatherData(filterData);
-      })
-      .catch(console.error);
+    setTimeout(() => {
+      let fetchedArticles = [];
+      if (
+        query &&
+        (query.toLowerCase() === "nature" ||
+          query.toLowerCase() === "yellowstone")
+      ) {
+        fetchedArticles = [
+          {
+            id: "search_article_nature_1",
+            image: image1,
+            date: "November 4, 2018",
+            title: "Everyone Needs a Special 'Sit Spot' in Nature",
+            text: "Ever since I read Richard Louv’s influential book, “Last Child in the Woods,” the idea of having a special “sit spot” has stuck with me.",
+            source: "TREEHUGGER",
+            keyword: "Nature",
+          },
+          {
+            id: "search_article_nature_2",
+            image: image2,
+            date: "February 19, 2019",
+            title: "Nature makes you better",
+            text: "We all know how good nature can make us feel. The tranquil sound of birds chirping and the gentle, green shade of a forest, the way dappled sunlight dances through leaves, can all lower blood pressure and reduce stress.",
+            source: "NATIONAL GEOGRAPHIC",
+            keyword: "Nature",
+          },
+          {
+            id: "search_article_nature_3",
+            image: image3,
+            date: "October 19, 2019",
+            title: "Grand Teton Renews Historic Crest Trail",
+            text: "The linking together of the Cascade and Death Canyon Trails, Wyoming’s two most popular trails, will continue next summer, thanks to a grant from the National Park Service and the Wyoming Office of Outdoor Recreation.",
+            source: "NATIONAL GEOGRAPHIC",
+            keyword: "Parks",
+          },
+        ];
+      }
+
+      setNewsArticles(fetchedArticles);
+      setIsLoading(false);
+
+      if (fetchedArticles.length === 0) {
+        setIsNotFound(true);
+      } else {
+        setIsNotFound(false);
+      }
+    }, 2000);
   }, []);
 
-  useEffect(() => {
-    getItems()
-      .then((data) => {
-        console.log("d", data);
-        //set the clothing items
-        setClothingItems(data);
-      })
-      .catch(console.error);
-  }, []);
-
-  // check token
-  useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    if (jwt) {
-      checkToken(jwt)
-        .then((user) => {
-          setCurrentUser(user);
-          setIsLoggedIn(true);
-        })
-        .catch((err) => {
-          console.error("Token invalide:", err);
-          localStorage.removeItem("jwt");
-        });
-    }
-  }, []);
-  useEffect(() => {
-    const openRegisterListener = () => setActiveModal("register");
-    const openLoginListener = () => setActiveModal("login");
-
-    window.addEventListener("open-register-modal", openRegisterListener);
-    window.addEventListener("open-login-modal", openLoginListener);
-
-    return () => {
-      window.removeEventListener("open-register-modal", openRegisterListener);
-      window.removeEventListener("open-login-modal", openLoginListener);
-    };
-  }, []);
+  // Fonction de déconnexion
+  const handleLogout = useCallback(() => {
+    setIsLoggedIn(false); // Change l'état de connexion à false
+    setUsername(""); // Efface le nom d'utilisateur (ou le réinitialise à une valeur par défaut)
+    setSavedArticles([]); // Efface les articles sauvegardés après déconnexion
+    navigate("/"); // Redirige l'utilisateur vers la page d'accueil
+    console.log("User logged out.");
+  }, [navigate]);
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <CurrentTemperatureUnitContext.Provider
-        value={{ currentTemperatureUnit, handleToggleSwitchChange }}
-      >
-        <div className="page">
-          <div className="page__content">
-            <Header
-              handleAddClick={handleAddClick}
-              weatherData={weatherData}
+    <div className="app">
+      <Header
+        onSearch={handleSearch}
+        isLoggedIn={isLoggedIn}
+        username={username}
+        mainBgImage={mainBgImage}
+        onLogout={handleLogout} // <-- Passez la fonction de déconnexion au Header
+      />
+
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Main
+              isLoading={isLoading}
+              newsArticles={newsArticles}
+              isNotFound={isNotFound}
+              hasSearched={hasSearched}
               isLoggedIn={isLoggedIn}
-              currentUser={currentUser}
-              onSignUp={() => setActiveModal("register")}
-              onSignIn={() => setActiveModal("login")}
-              onLogout={handleLogout}
+              savedArticleIds={savedArticleIds}
+              onSaveArticle={handleToggleSavedArticle}
             />
+          }
+        />
+        <Route
+          path="/saved-news"
+          element={
+            <SavedNews
+              savedArticles={savedArticles}
+              username={username}
+              onSaveArticle={handleToggleSavedArticle}
+              isLoggedIn={isLoggedIn}
+              savedArticleIds={savedArticleIds}
+            />
+          }
+        />
+      </Routes>
 
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <Main
-                    weatherData={weatherData}
-                    handleCardClick={handleCardClick}
-                    clothingItems={clothingItems}
-                    onCardLike={handleCardLike}
-                  />
-                }
-              />
-              <Route
-                path="/profile"
-                element={
-                  <ProtectedRoute isLoggedIn={isLoggedIn}>
-                    <Profile
-                      onCardClick={handleCardClick}
-                      clothingItems={clothingItems}
-                      setClothingItems={setClothingItems}
-                      onAddClick={handleAddClick}
-                      onEditProfile={handleEditProfile}
-                      onLogout={handleLogout}
-                      onCardLike={handleCardLike}
-                    />
-                  </ProtectedRoute>
-                }
-              />
-            </Routes>
-
-            <AddItemModal
-              isOpen={activeModal === "add-garment"}
-              onClose={closeActiveModal}
-              onAddItemModalSubmit={handleAddItemModalSubmit}
-            />
-            <ItemModal
-              activeModal={activeModal}
-              card={selectedCard}
-              onClose={closeActiveModal}
-              onDeleteClick={handleDeleteClick}
-            />
-            {showConfirmDelete && (
-              <ConfirmationModal
-                onClose={() => setShowConfirmDelete(false)}
-                onConfirm={handleConfirmDelete}
-              />
-            )}
-
-            {/* Modals pour Register et Login */}
-            <RegisterModal
-              isOpen={activeModal === "register"}
-              onClose={closeActiveModal}
-              onRegister={handleRegister}
-            />
-            <LoginModal
-              isOpen={activeModal === "login"}
-              onClose={closeActiveModal}
-              onLogin={handleLogin}
-            />
-            <EditProfileModal
-              isOpen={activeModal === "edit-profile"}
-              onClose={closeActiveModal}
-              onUpdateUser={handleUpdateUser}
-            />
-
-            <Footer />
-          </div>
-        </div>
-      </CurrentTemperatureUnitContext.Provider>
-    </CurrentUserContext.Provider>
+      <Footer />
+      {/* Boutons temporaires pour le test */}
+      <div
+        style={{
+          position: "fixed",
+          bottom: "20px",
+          left: "20px",
+          backgroundColor: "white",
+          padding: "10px",
+          border: "1px solid gray",
+          zIndex: 100,
+        }}
+      >
+        <button onClick={() => setIsLoggedIn(!isLoggedIn)}>
+          {isLoggedIn ? "Log Out (Test Button)" : "Log In (for testing save)"}
+        </button>
+        <button
+          onClick={() => console.log("Current Saved Articles:", savedArticles)}
+        >
+          Log Saved Articles
+        </button>
+      </div>
+    </div>
   );
 }
 

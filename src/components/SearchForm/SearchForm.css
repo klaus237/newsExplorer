@@ -1,0 +1,55 @@
+/* SearchForm Block */
+.searchForm {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  max-width: 580px; /* Ajustez la largeur maximale du formulaire */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.searchForm__input {
+  padding: 15px 20px;
+  border: none;
+  border-radius: 30px 0 0 30px; /* Côté gauche arrondi */
+  font-size: 16px;
+  width: 100%;
+  outline: none;
+  box-sizing: border-box; /* Inclure padding dans la largeur */
+}
+
+.searchForm__button {
+  background-color: #2f71e5; /* Couleur bleue du bouton */
+  color: #fff;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 0 30px 30px 0; /* Côté droit arrondi */
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  flex-shrink: 0; /* Empêche le bouton de rétrécir */
+}
+
+.searchForm__button:hover {
+  background-color: #1a5fb5; /* Bleu plus foncé au survol */
+}
+
+/* Media Queries pour SearchForm */
+@media (max-width: 768px) {
+  .searchForm {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .searchForm__input {
+    border-radius: 30px;
+    margin-bottom: 10px;
+    max-width: 100%; /* S'étend sur toute la largeur disponible */
+  }
+
+  .searchForm__button {
+    border-radius: 30px;
+    width: 100%;
+    max-width: 400px; /* Limite la largeur du bouton en mode mobile */
+  }
+}

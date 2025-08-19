@@ -1,0 +1,159 @@
+/* Navigation Block */
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 104px;
+  color: #fff; /* Couleur de texte par défaut pour la page principale */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Ligne blanche légèrement transparente pour la page principale */
+  transition: border-bottom 0.3s ease; /* Transition pour la bordure */
+}
+
+/* Nav links */
+.navigation__links {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+}
+
+.navigation__link {
+  color: #fff; /* Couleur des liens par défaut */
+  text-decoration: none;
+  font-size: 18px;
+  padding: 10px 0;
+  margin: 0 10px;
+  transition: opacity 0.3s ease;
+  border-bottom: 3px solid transparent; /* Bordure transparente pour l'underline actif */
+}
+
+.navigation__link:hover {
+  opacity: 0.7;
+}
+
+.navigation__link--active {
+  border-bottom-color: #fff; /* Underline blanc pour le lien actif sur la page principale */
+}
+
+/* Navigation Logo */
+.navigation__logo {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Nav Button (Sign In / Username) */
+.navigation__button {
+  background-color: transparent;
+  border: 1px solid #fff; /* Bordure blanche par défaut */
+  color: #fff; /* Texte blanc par défaut */
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease;
+  display: flex; /* Pour aligner l'icône et le texte */
+  align-items: center;
+  gap: 8px; /* Espace entre le nom d'utilisateur et l'icône */
+  box-sizing: border-box; /* Inclure padding et border dans la largeur/hauteur */
+}
+
+.navigation__button:hover {
+  background-color: #fff;
+  color: #000;
+}
+
+/* Logout Icon (Common styles) */
+.navigation__logout-icon {
+  width: 24px;
+  height: 24px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: filter 0.3s ease;
+}
+
+/* Logout Icon (on main page - logged in state) */
+.navigation__button--logged-in .navigation__logout-icon {
+  background-image: url("../../images/logout-icon.svg"); /* Icône blanche par défaut */
+}
+
+/* Logout Icon hover (on main page) */
+.navigation__button--logged-in:hover .navigation__logout-icon {
+  filter: invert(1); /* Devient noir sur fond blanc au survol */
+}
+
+/* --- Styles for Saved News Page (Dark Mode) --- */
+.navigation.navigation--dark-mode {
+  color: #1a1b22; /* Texte sombre pour la navigation */
+  border-bottom: 1px solid #e8e8e8; /* Ligne grise pour le thème blanc */
+}
+
+.navigation__logo--dark {
+  color: #1a1b22; /* Logo sombre */
+}
+
+.navigation__link--dark {
+  color: #1a1b22; /* Liens sombres */
+}
+
+.navigation__link--dark.navigation__link--active {
+  border-bottom-color: #1a1b22; /* Underline sombre pour le lien actif */
+}
+
+.navigation__button--dark {
+  border-color: #1a1b22; /* Bordure sombre */
+  color: #1a1b22; /* Texte sombre */
+}
+
+.navigation__button--dark:hover {
+  background-color: #1a1b22; /* Fond sombre au survol */
+  color: #fff; /* Texte blanc au survol */
+}
+
+.navigation__button--dark .navigation__logout-icon {
+  background-image: url("../../images/logout-icon-dark.svg"); /* Icône sombre */
+}
+
+.navigation__button--dark:hover .navigation__logout-icon {
+  filter: invert(1); /* Devient blanc sur fond sombre au survol */
+}
+
+/* --- Media Queries --- */
+@media (max-width: 1024px) {
+  .navigation {
+    padding: 15px 40px;
+  }
+  .navigation__link {
+    font-size: 16px;
+    margin: 0 5px;
+  }
+  .navigation__button {
+    font-size: 16px;
+    padding: 8px 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navigation {
+    flex-direction: column;
+    padding: 10px 16px;
+  }
+  .navigation__links {
+    flex-direction: column;
+    width: 100%;
+    gap: 0;
+  }
+  .navigation__link,
+  .navigation__button {
+    width: 100%;
+    text-align: center;
+    margin: 5px 0;
+  }
+  .navigation__button {
+    justify-content: center; /* Centrer le contenu du bouton en colonne */
+  }
+}

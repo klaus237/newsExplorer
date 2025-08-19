@@ -1,45 +1,29 @@
-.page {
-  font-family: "Cabinet Grotesk", sans-serif;
-  background-color: #f3f3f3;
+/* Styles globaux ou de base pour l'application */
+:global(body) {
+  /* :global() pour cibler le body qui n'est pas dans le scope du module */
+  margin: 0;
+  font-family: Arial, sans-serif; /* Utilisez votre police préférée */
+  color: #333;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-.page__content {
-  max-width: 1360px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-.modal__form {
+
+/* Styles pour le wrapper principal de l'application si nécessaire */
+.app {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  gap: 25px;
+  min-height: 100vh; /* Pour s'assurer que le footer reste en bas */
 }
 
-.modal__label {
-  font-family: "Cabinet Grotesk", sans-serif;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 20px;
-  letter-spacing: 0%;
+/* Autres styles de réinitialisation ou globaux */
+:global(a) {
+  text-decoration: none;
+  color: inherit;
 }
 
-.modal__input {
-  width: 100%;
-  padding-top: 10px;
-  box-sizing: border-box;
-  border-bottom: 1px solid #00000080;
-  border-left: none;
-  border-right: none;
-  border-top: none;
-}
-
-.modal__label_type_radio {
-  padding: 5px;
-}
-.modal__legend {
-  font-family: "Cabinet Grotesk", sans-serif;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 20px;
-  letter-spacing: 0%;
-  padding-bottom: 5px;
+:global(button) {
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  outline: none;
 }

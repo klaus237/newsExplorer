@@ -1,126 +1,125 @@
+/* Header Block */
 .header {
-  display: flex;
-  align-items: center;
-  padding: 32px 0 28px;
-}
-.header__logo {
-  margin-right: 24px;
-}
-.header__date-and-location {
-  margin: 0;
-  font-family: Cabinet Grotesk;
-  font-weight: 700;
-  font-size: 20px;
-  letter-spacing: 0%;
-  color: rgba(0, 0, 0, 1);
-}
-.header__add-clothes-btn {
-  margin: 0 20px 0 auto;
-  font-family: Cabinet Grotesk;
-  font-weight: 700;
-  font-size: 20px;
-  letter-spacing: 0%;
-  color: rgba(0, 0, 0, 1);
-}
-
-.header__user-container {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.header__username {
-  margin: 0;
-}
-.header__right-controls {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-left: auto;
-}
-.header__link {
-  text-decoration: none;
-  color: rgba(0, 0, 0, 1);
-  font-family: Cabinet Grotesk;
-  font-weight: 700;
-  font-size: 20px;
-  letter-spacing: 0%;
-}
-
-.header__auth-buttons {
-  display: flex;
-  gap: 8px;
-}
-
-.header__auth-btn {
-  color: rgba(0, 0, 0, 1);
-  cursor: pointer;
-  font-family: "Cabinet Grotesk", sans-serif;
-  font-weight: 700;
-  font-style: Bold;
-  font-size: 20px;
-  line-height: 24px;
-  letter-spacing: 0%;
-}
-
-.header__auth-btn:hover {
-  color: rgb(62, 61, 61);
-}
-
-.header__auth-btn--signup {
-  color: rgba(0, 0, 0, 1);
-  cursor: pointer;
-  font-family: "Cabinet Grotesk", sans-serif;
-  font-weight: 700;
-  font-style: Bold;
-  font-size: 20px;
-  line-height: 24px;
-  letter-spacing: 0%;
-}
-
-.header__auth-btn--signup:hover {
-  color: rgb(62, 61, 61);
-}
-
-.header__logout-btn {
-  color: rgba(0, 0, 0, 1);
-  cursor: pointer;
-  font-family: "Cabinet Grotesk", sans-serif;
-  font-weight: 700;
-  font-style: Bold;
-  font-size: 20px;
-  line-height: 24px;
-  letter-spacing: 0%;
-}
-
-/* .header__logout-btn:hover {
-  background: #dc3545;
+  background-color: #a0a0a0; /* Default background if no image is set */
+  background-size: cover;
+  background-position: center;
   color: #fff;
-} */
-.header__avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #ccc;
-  color: #fff;
+  padding-bottom: 80px; /* Adjust padding if needed, for main page content below header */
+}
+
+/* Styles specifically for the main page header */
+.header:not(.header--saved-news) {
+  /* These styles apply only when it's NOT the saved-news header */
+  min-height: 400px; /* Example minimum height for main page */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.header__content {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 50px; /* Adjust as needed */
+}
+
+.header__title {
+  font-size: 60px;
+  line-height: 1.07;
+  margin-bottom: 30px;
   font-weight: bold;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
 }
 
-.header__avatar-placeholder {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #ccc;
-  color: #fff;
-  font-weight: bold;
+.header__subtitle {
   font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+  line-height: 1.33;
+  margin-bottom: 60px;
+}
+
+/* --- Styles for Header on Saved News Page --- */
+.header--saved-news {
+  background-image: none; /* No background image */
+  background-color: #fff; /* White background */
+  color: #1a1b22; /* Dark text for navigation */
+  padding-bottom: 0; /* No extra padding below navigation */
+  min-height: auto; /* Remove min-height */
+}
+
+/* You might need to adjust Navigation styles for the saved-news page as well */
+.header--saved-news .navigation {
+  color: #1a1b22; /* Text color for navigation on saved-news page */
+  border-bottom: 1px solid #e8e8e8; /* Separator line */
+  padding: 20px 104px; /* Ensure consistent padding */
+}
+
+.header--saved-news .navigation__logo {
+  color: #1a1b22; /* Darker logo */
+}
+
+.header--saved-news .navigation__link {
+  color: #1a1b22; /* Darker links */
+}
+
+.header--saved-news .navigation__link--active {
+  border-bottom-color: #1a1b22; /* Darker underline */
+}
+
+.header--saved-news .navigation__button {
+  border-color: #1a1b22; /* Darker border */
+  color: #1a1b22; /* Darker text */
+}
+
+.header--saved-news .navigation__button:hover {
+  background-color: #1a1b22;
+  color: #fff;
+}
+.header--saved-news .navigation__button--logged-in .navigation__logout-icon {
+  /* You'll need a darker logout icon for this state */
+  background-image: url("../../images/logout-icon-dark.svg"); /* Create a dark version of your logout icon */
+}
+.header--saved-news
+  .navigation__button--logged-in:hover
+  .navigation__logout-icon {
+  filter: invert(0); /* Remove invert filter if icon is already dark */
+}
+
+/* Media Queries for Header (adjust as needed) */
+@media (max-width: 1024px) {
+  .header {
+    padding-bottom: 60px;
+  }
+  .header__title {
+    font-size: 45px;
+    margin-bottom: 20px;
+  }
+  .header__subtitle {
+    font-size: 16px;
+    margin-bottom: 40px;
+  }
+  .header--saved-news {
+    padding-bottom: 0;
+  }
+  .header--saved-news .navigation {
+    padding: 15px 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding-bottom: 30px;
+  }
+  .header__title {
+    font-size: 35px;
+    margin-bottom: 15px;
+  }
+  .header__subtitle {
+    font-size: 14px;
+    margin-bottom: 30px;
+  }
+  .header--saved-news {
+    padding-bottom: 0;
+  }
+  .header--saved-news .navigation {
+    padding: 10px 16px;
+  }
 }

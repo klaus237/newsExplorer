@@ -1,0 +1,35 @@
+/* Preloader Block */
+.preloader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px; /* Adjust padding as needed */
+  background-color: #f5f5f5; /* Match the background of the news results section */
+}
+
+.preloader__circle {
+  display: block;
+  width: 74px; /* Size of the circle */
+  height: 74px;
+  border: 1px solid #444; /* Darker border for the circle */
+  border-bottom-color: transparent; /* Makes it look like it's spinning */
+  border-radius: 50%;
+  animation: spin 1s infinite linear; /* Spin animation */
+  margin-bottom: 24px; /* Space between circle and text */
+}
+
+.preloader__text {
+  font-size: 18px;
+  color: #b6bcbf;
+}
+
+/* Keyframe animation for spinning circle */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
