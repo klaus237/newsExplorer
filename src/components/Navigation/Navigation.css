@@ -7,6 +7,7 @@
   color: #fff; /* Couleur de texte par défaut pour la page principale */
   border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Ligne blanche légèrement transparente pour la page principale */
   transition: border-bottom 0.3s ease; /* Transition pour la bordure */
+  font-family: "Roboto Slab", sans-serif;
 }
 
 /* Nav links */
@@ -20,6 +21,7 @@
 }
 
 .navigation__link {
+  font-family: "Roboto", sans-serif;
   color: #fff; /* Couleur des liens par défaut */
   text-decoration: none;
   font-size: 18px;
@@ -27,6 +29,11 @@
   margin: 0 10px;
   transition: opacity 0.3s ease;
   border-bottom: 3px solid transparent; /* Bordure transparente pour l'underline actif */
+
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0px;
+  text-align: center;
 }
 
 .navigation__link:hover {
@@ -40,8 +47,12 @@
 /* Navigation Logo */
 .navigation__logo {
   font-size: 20px;
-  font-weight: bold;
+  font-weight: 700;
   margin: 0;
+  font-family: "Roboto Slab", sans-serif;
+  line-height: 24px;
+  letter-spacing: 0px;
+  vertical-align: middle;
 }
 
 /* Nav Button (Sign In / Username) */
@@ -59,6 +70,9 @@
   align-items: center;
   gap: 8px; /* Espace entre le nom d'utilisateur et l'icône */
   box-sizing: border-box; /* Inclure padding et border dans la largeur/hauteur */
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  letter-spacing: 0px;
 }
 
 .navigation__button:hover {

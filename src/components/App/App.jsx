@@ -227,11 +227,11 @@ function App() {
         <button onClick={() => setIsLoggedIn(!isLoggedIn)}>
           {isLoggedIn ? "Log Out (Test Button)" : "Log In (for testing save)"}
         </button>
-        <button
+        {/* <button
           onClick={() => console.log("Current Saved Articles:", savedArticles)}
         >
           Log Saved Articles
-        </button>
+        </button> */}
       </div>
     </div>
   );

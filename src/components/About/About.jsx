@@ -14,7 +14,7 @@ function About() {
         />
       </div>
       <div className="about__content">
-        <h2 className="about__title">About the author</h2>
+        <h6 className="about__title">About the author</h6>
         <p className="about__text">
           This block describes the project author. Here you should indicate your
           name, what you do, and which development technologies you know.

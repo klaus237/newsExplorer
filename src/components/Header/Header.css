@@ -25,15 +25,18 @@
 
 .header__title {
   font-size: 60px;
-  line-height: 1.07;
   margin-bottom: 30px;
-  font-weight: bold;
+  font-family: "Roboto Slab", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0px;
 }
 
 .header__subtitle {
   font-size: 18px;
   line-height: 1.33;
   margin-bottom: 60px;
+  font-family: "Roboto", sans-serif;
+  letter-spacing: 0px;
 }
 
 /* --- Styles for Header on Saved News Page --- */

@@ -2,7 +2,7 @@
 :global(body) {
   /* :global() pour cibler le body qui n'est pas dans le scope du module */
   margin: 0;
-  font-family: Arial, sans-serif; /* Utilisez votre police préférée */
+  font-family: "Roboto Slab", sans-serif;
   color: #333;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

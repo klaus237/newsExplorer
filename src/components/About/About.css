@@ -13,8 +13,8 @@
 }
 
 .about__image {
-  width: 250px;
-  height: 250px;
+  width: 464px;
+  height: 464px;
   border-radius: 50%;
   object-fit: cover;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -25,14 +25,17 @@
 }
 
 .about__title {
-  font-size: 36px;
+  font-size: 40px;
   margin-bottom: 20px;
+  font-family: "Roboto Slab", sans-serif;
+  font-weight: 400;
 }
 
 .about__text {
   font-size: 18px;
   line-height: 1.6;
   margin-bottom: 15px;
+  font-family: "Roboto", sans-serif;
 }
 
 /* Media Queries pour About */
