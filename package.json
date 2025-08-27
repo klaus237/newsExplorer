@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://klaus237.github.io/newsExplorer",
+  "homepage": "https://klaus237.github.io/newsExplorer/",
   "scripts": {
     "dev": "vite --open",
     "build": "vite build",
