@@ -1,16 +1,14 @@
-/* Navigation Block */
 .navigation {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 104px;
-  color: #fff; /* Couleur de texte par défaut pour la page principale */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Ligne blanche légèrement transparente pour la page principale */
-  transition: border-bottom 0.3s ease; /* Transition pour la bordure */
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  transition: border-bottom 0.3s ease;
   font-family: "Roboto Slab", sans-serif;
 }
 
-/* Nav links */
 .navigation__links {
   list-style: none;
   display: flex;
@@ -22,14 +20,13 @@
 
 .navigation__link {
   font-family: "Roboto", sans-serif;
-  color: #fff; /* Couleur des liens par défaut */
+  color: rgba(255, 255, 255, 1);
   text-decoration: none;
   font-size: 18px;
-  padding: 10px 0;
   margin: 0 10px;
   transition: opacity 0.3s ease;
-  border-bottom: 3px solid transparent; /* Bordure transparente pour l'underline actif */
-
+  border-bottom: 3px solid transparent;
+  padding: 28px;
   font-weight: 500;
   line-height: 24px;
   letter-spacing: 0px;
@@ -41,10 +38,9 @@
 }
 
 .navigation__link--active {
-  border-bottom-color: #fff; /* Underline blanc pour le lien actif sur la page principale */
+  border-bottom-color: #fff;
 }
 
-/* Navigation Logo */
 .navigation__logo {
   font-size: 20px;
   font-weight: 700;
@@ -53,23 +49,23 @@
   line-height: 24px;
   letter-spacing: 0px;
   vertical-align: middle;
+  color: rgba(255, 255, 255, 1);
 }
 
-/* Nav Button (Sign In / Username) */
 .navigation__button {
   background-color: transparent;
-  border: 1px solid #fff; /* Bordure blanche par défaut */
-  color: #fff; /* Texte blanc par défaut */
+  border: 1px solid #fff;
+  color: rgba(255, 255, 255, 1);
   padding: 10px 20px;
   border-radius: 30px;
   font-size: 18px;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease,
     border-color 0.3s ease;
-  display: flex; /* Pour aligner l'icône et le texte */
+  display: flex;
   align-items: center;
-  gap: 8px; /* Espace entre le nom d'utilisateur et l'icône */
-  box-sizing: border-box; /* Inclure padding et border dans la largeur/hauteur */
+  gap: 8px;
+  box-sizing: border-box;
   font-family: "Roboto", sans-serif;
   font-weight: 500;
   letter-spacing: 0px;
@@ -80,63 +76,59 @@
   color: #000;
 }
 
-/* Logout Icon (Common styles) */
 .navigation__logout-icon {
+  display: flex;
   width: 24px;
   height: 24px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
   transition: filter 0.3s ease;
 }
 
-/* Logout Icon (on main page - logged in state) */
-.navigation__button--logged-in .navigation__logout-icon {
-  background-image: url("../../images/logout-icon.svg"); /* Icône blanche par défaut */
+.navigation__button--logged-in:hover .navigation__logout-icon img {
+  filter: invert(1);
 }
 
-/* Logout Icon hover (on main page) */
-.navigation__button--logged-in:hover .navigation__logout-icon {
-  filter: invert(1); /* Devient noir sur fond blanc au survol */
+.navigation--dark-mode
+  .navigation__button--logged-in:hover
+  .navigation__logout-icon
+  img {
+  filter: none;
 }
 
-/* --- Styles for Saved News Page (Dark Mode) --- */
 .navigation.navigation--dark-mode {
-  color: #1a1b22; /* Texte sombre pour la navigation */
-  border-bottom: 1px solid #e8e8e8; /* Ligne grise pour le thème blanc */
+  color: #1a1b22;
+  border-bottom: 1px solid #e8e8e8;
 }
 
 .navigation__logo--dark {
-  color: #1a1b22; /* Logo sombre */
+  color: #1a1b22;
 }
 
 .navigation__link--dark {
-  color: #1a1b22; /* Liens sombres */
+  color: #1a1b22;
 }
 
 .navigation__link--dark.navigation__link--active {
-  border-bottom-color: #1a1b22; /* Underline sombre pour le lien actif */
+  border-bottom-color: #1a1b22;
 }
 
 .navigation__button--dark {
-  border-color: #1a1b22; /* Bordure sombre */
-  color: #1a1b22; /* Texte sombre */
+  border-color: #1a1b22;
+  color: #1a1b22;
 }
 
 .navigation__button--dark:hover {
-  background-color: #1a1b22; /* Fond sombre au survol */
-  color: #fff; /* Texte blanc au survol */
+  background-color: #fff;
+  color: #222;
 }
 
-.navigation__button--dark .navigation__logout-icon {
-  background-image: url("../../images/logout-icon-dark.svg"); /* Icône sombre */
+.navigation__hamburger-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 1001;
 }
 
-.navigation__button--dark:hover .navigation__logout-icon {
-  filter: invert(1); /* Devient blanc sur fond sombre au survol */
-}
-
-/* --- Media Queries --- */
 @media (max-width: 1024px) {
   .navigation {
     padding: 15px 40px;
@@ -153,21 +145,160 @@
 
 @media (max-width: 768px) {
   .navigation {
-    flex-direction: column;
-    padding: 10px 16px;
+    z-index: 1000;
+    position: relative;
   }
+
+  .navigation__logo {
+    z-index: 1001;
+  }
+
+  .navigation.navigation--dark-mode .navigation__logo {
+    color: #1a1b22;
+  }
+
+  .navigation__hamburger-btn {
+    display: block;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 1001;
+  }
+
   .navigation__links {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: none;
     flex-direction: column;
-    width: 100%;
-    gap: 0;
+    gap: 15px;
+    padding-top: 80px;
+    align-items: flex-start;
+    z-index: 1000;
+
+    background: linear-gradient(
+      to bottom,
+      rgba(26, 27, 34, 1) 0%,
+      rgba(26, 27, 34, 1) 30%,
+      rgba(26, 27, 34, 0.6) 60%,
+      rgba(26, 27, 34, 0.3) 100%
+    );
   }
-  .navigation__link,
-  .navigation__button {
+
+  .navigation__links--open {
+    display: flex;
+  }
+
+  .navigation__links::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
+    height: 0.5px;
+    background-color: #5d5b5b;
+    margin-top: 60px;
+  }
+  .navigation__logo {
+    position: relative;
+    z-index: 1001;
+    color: #fff;
+  }
+  .navigation__close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 1001;
+  }
+
+  .navigation__close-btn img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .navigation__link {
+    width: 100%;
+    text-decoration: none;
+    border-bottom: none;
+    opacity: 1;
+    top: 72px;
+    margin: 15px 0;
+    padding: 0 16px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 56px;
+    letter-spacing: 0px;
+  }
+  .navigation__links li:last-child {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .header--saved-news .navigation__link {
+    color: #fff;
+  }
+
+  .navigation__button {
+    margin: 0;
+    width: 288px;
+    height: 56px;
+
+    border-radius: 100px;
+    border: 1px solid rgba(255, 255, 255, 1);
+
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: 0px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    margin: 5px 0;
+
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    color: #222;
+    background-color: #fff;
   }
-  .navigation__button {
-    justify-content: center; /* Centrer le contenu du bouton en colonne */
+
+  .navigation__button:hover {
+    background-color: #fff;
+    color: #222;
+    border: 1px solid rgba(26, 27, 34, 1);
+  }
+
+  .navigation__logo--dark {
+    color: #1a1b22;
+  }
+
+  .navigation__logo--menu-open {
+    color: #fff;
+  }
+
+  .navigation.navigation--dark-mode .navigation__logo {
+    color: #1a1b22;
+  }
+
+  .navigation__logo.navigation__logo--menu-open {
+    color: #fff !important;
+  }
+
+  .navigation__links--open .navigation__logout-icon img {
+    filter: none;
+  }
+
+  .navigation__links--open
+    .navigation__button--logged-in:hover
+    .navigation__logout-icon
+    img {
+    filter: none;
   }
 }

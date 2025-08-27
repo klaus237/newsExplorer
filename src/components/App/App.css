@@ -1,6 +1,4 @@
-/* Styles globaux ou de base pour l'application */
 :global(body) {
-  /* :global() pour cibler le body qui n'est pas dans le scope du module */
   margin: 0;
   font-family: "Roboto Slab", sans-serif;
   color: #333;
@@ -8,14 +6,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Styles pour le wrapper principal de l'application si nécessaire */
 .app {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Pour s'assurer que le footer reste en bas */
+  min-height: 100vh;
 }
 
-/* Autres styles de réinitialisation ou globaux */
 :global(a) {
   text-decoration: none;
   color: inherit;

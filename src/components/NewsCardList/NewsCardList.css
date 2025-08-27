@@ -1,28 +1,23 @@
-/* NewsCardList Block */
 .newsCardList {
   display: grid;
-  /* For 3 columns, with a minimum of 280px per card */
+
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 16px; /* Space between cards */
-  justify-content: center; /* Center cards if they don't fill all space */
-  max-width: 1280px; /* Limit the width of the card grid */
-  margin: 0 auto; /* Center the grid container */
-  padding: 0 20px; /* Padding for the grid if the window is smaller */
+  gap: 16px;
+  justify-content: center;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-/* Media Queries for NewsCardList */
 @media (max-width: 1024px) {
   .newsCardList {
-    grid-template-columns: repeat(
-      auto-fit,
-      minmax(260px, 1fr)
-    ); /* Slightly smaller on tablets */
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   }
 }
 
 @media (max-width: 768px) {
   .newsCardList {
-    grid-template-columns: 1fr; /* One column on mobile */
-    padding: 0; /* No internal padding if parent already has it */
+    grid-template-columns: 1fr;
+    padding: 0;
   }
 }

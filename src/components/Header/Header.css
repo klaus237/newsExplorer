@@ -1,16 +1,14 @@
-/* Header Block */
 .header {
-  background-color: #a0a0a0; /* Default background if no image is set */
+  background-color: #a0a0a0;
   background-size: cover;
   background-position: center;
-  color: #fff;
-  padding-bottom: 80px; /* Adjust padding if needed, for main page content below header */
+  color: rgba(255, 255, 255, 1);
+
+  padding-bottom: 80px;
 }
 
-/* Styles specifically for the main page header */
 .header:not(.header--saved-news) {
-  /* These styles apply only when it's NOT the saved-news header */
-  min-height: 400px; /* Example minimum height for main page */
+  min-height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -19,57 +17,59 @@
 .header__content {
   max-width: 600px;
   margin: 0 auto;
-  text-align: center;
-  padding-top: 50px; /* Adjust as needed */
+
+  padding-top: 50px;
 }
 
 .header__title {
-  font-size: 60px;
+  font-size: 46px;
   margin-bottom: 30px;
   font-family: "Roboto Slab", sans-serif;
   font-weight: 400;
   letter-spacing: 0px;
+  color: rgba(255, 255, 255, 1);
 }
 
 .header__subtitle {
-  font-size: 18px;
-  line-height: 1.33;
+  font-size: 22px;
+
   margin-bottom: 60px;
   font-family: "Roboto", sans-serif;
   letter-spacing: 0px;
+  color: rgba(255, 255, 255, 1);
+
+  font-weight: 400;
 }
 
-/* --- Styles for Header on Saved News Page --- */
 .header--saved-news {
-  background-image: none; /* No background image */
-  background-color: #fff; /* White background */
-  color: #1a1b22; /* Dark text for navigation */
-  padding-bottom: 0; /* No extra padding below navigation */
-  min-height: auto; /* Remove min-height */
+  background-image: none;
+  background-color: #fff;
+  color: #1a1b22;
+  padding-bottom: 0;
+  min-height: auto;
 }
 
-/* You might need to adjust Navigation styles for the saved-news page as well */
 .header--saved-news .navigation {
-  color: #1a1b22; /* Text color for navigation on saved-news page */
-  border-bottom: 1px solid #e8e8e8; /* Separator line */
-  padding: 20px 104px; /* Ensure consistent padding */
+  color: #1a1b22;
+  border-bottom: 1px solid #e8e8e8;
+  padding: 20px 104px;
 }
 
 .header--saved-news .navigation__logo {
-  color: #1a1b22; /* Darker logo */
+  color: #1a1b22;
 }
 
 .header--saved-news .navigation__link {
-  color: #1a1b22; /* Darker links */
+  color: #1a1b22;
 }
 
 .header--saved-news .navigation__link--active {
-  border-bottom-color: #1a1b22; /* Darker underline */
+  border-bottom-color: #1a1b22;
 }
 
 .header--saved-news .navigation__button {
-  border-color: #1a1b22; /* Darker border */
-  color: #1a1b22; /* Darker text */
+  border-color: #1a1b22;
+  color: #1a1b22;
 }
 
 .header--saved-news .navigation__button:hover {
@@ -77,16 +77,19 @@
   color: #fff;
 }
 .header--saved-news .navigation__button--logged-in .navigation__logout-icon {
-  /* You'll need a darker logout icon for this state */
-  background-image: url("../../images/logout-icon-dark.svg"); /* Create a dark version of your logout icon */
+  background-image: url("../../images/logout-icon-dark.svg");
 }
 .header--saved-news
   .navigation__button--logged-in:hover
   .navigation__logout-icon {
-  filter: invert(0); /* Remove invert filter if icon is already dark */
+  filter: invert(0);
 }
 
-/* Media Queries for Header (adjust as needed) */
+.header--saved-news .navigation__button:hover {
+  background-color: #fff;
+  color: #1a1b22;
+}
+
 @media (max-width: 1024px) {
   .header {
     padding-bottom: 60px;
@@ -111,18 +114,40 @@
   .header {
     padding-bottom: 30px;
   }
+  .header__content {
+    padding: 20px;
+  }
+
   .header__title {
-    font-size: 35px;
+    font-size: 36px;
     margin-bottom: 15px;
   }
   .header__subtitle {
-    font-size: 14px;
     margin-bottom: 30px;
+
+    font-family: Roboto;
+    font-weight: 400;
+    font-size: 18px;
+    width: 288px;
+    line-height: 24px;
+    letter-spacing: 0px;
   }
   .header--saved-news {
     padding-bottom: 0;
   }
   .header--saved-news .navigation {
     padding: 10px 16px;
+  }
+  .header--saved-news .navigation__link {
+    color: #fff;
+  }
+  .header--saved-news .navigation__button:hover {
+    background-color: #fff;
+    color: #222;
+  }
+  .header--saved-news
+    .navigation__button--logged-in:hover
+    .navigation__logout-icon {
+    filter: invert(1);
   }
 }

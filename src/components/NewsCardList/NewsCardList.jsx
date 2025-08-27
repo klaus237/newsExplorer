@@ -9,23 +9,25 @@ function NewsCardList({
   onSaveArticle,
   isSavedPage,
 }) {
-  // Receive isSavedPage
+  const filteredArticles = articles
+    ? articles.filter((article) => article != null)
+    : [];
+
+  if (filteredArticles.length === 0) {
+    return null;
+  }
+
   return (
     <div className="newsCardList">
-      {articles.map((article) => (
+      {filteredArticles.map((article) => (
         <NewsCard
-          key={article.id}
-          image={article.image}
-          date={article.date}
-          title={article.title}
-          text={article.text}
-          source={article.source}
+          key={article._id}
+          isSaved={savedArticleIds.has(article._id)}
+          article={article}
           isLoggedIn={isLoggedIn}
-          isSaved={savedArticleIds.has(article.id)}
-          // Pass the whole article object to onSaveArticle so the handler knows what to save/remove
-          onSaveClick={() => onSaveArticle(article)}
-          isSavedPage={isSavedPage} // Pass isSavedPage to NewsCard
-          keyword={article.keyword} // Pass the keyword (relevant for saved articles)
+          onSaveArticle={onSaveArticle}
+          isSavedPage={isSavedPage}
+          keyword={article.keyword}
         />
       ))}
     </div>

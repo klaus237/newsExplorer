@@ -1,20 +1,18 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom"; // <-- Importez useNavigate
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
 import SavedNews from "../SavedNews/SavedNews";
+import LoginModal from "../LoginModal/LoginModal";
+import RegisterModal from "../RegisterModal/RegisterModal";
+import SuccessRegisterModal from "../SuccessRegisterModal/SuccessRegisterModal";
 import "./App.css";
 
-// Importez vos images ici
-import image1 from "../../assets/image_04.png";
-import image2 from "../../assets/image_07.png";
-import image3 from "../../assets/image_08.png";
-import image4 from "../../assets/image_08.png"; // Example for a saved article
-import image5 from "../../assets/image_08.png";
-import mainBgImage from "../../assets/background.png";
-// import logoutIconDark from '../../images/logout-icon-dark.svg'; // Non nécessaire ici si l'icône est gérée via CSS
+import { getNews } from "../../utils/NewsApi";
+import { authorize, checkToken } from "../../utils/auth";
+import { getSavedArticles, saveArticle, deleteArticle } from "../../utils/api";
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -24,153 +22,239 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("Elise");
   const [savedArticles, setSavedArticles] = useState([]);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const [isSuccessRegisterModalOpen, setIsSuccessRegisterModalOpen] =
+    useState(false);
+  const [apiError, setApiError] = useState(null);
 
-  const navigate = useNavigate(); // <-- Initialisez useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setSavedArticles([
-      {
-        id: "saved_article_1",
-        image: image1,
-        date: "November 4, 2020",
-        title: "Everyone Needs a Special 'Sit Spot' in Nature",
-        text: "Ever since I read Richard Louv’s influential book, “Last Child in the Woods,” the idea of having a special “sit spot” has stuck with me. This on-the-go world in which everyone — both adults and children — spends so much time on their phone, it’s not surprising.",
-        source: "TREEHUGGER",
-        keyword: "Nature",
-      },
-      {
-        id: "saved_article_2",
-        image: image2,
-        date: "February 19, 2019",
-        title: "Nature makes you better",
-        text: "We all know how good nature can make us feel. The tranquil sound of birds chirping and the gentle, green shade of a forest, the way dappled sunlight dances through leaves, can all lower blood pressure and reduce stress.",
-        source: "NATIONAL GEOGRAPHIC",
-        keyword: "Nature",
-      },
-      {
-        id: "saved_article_3",
-        image: image3,
-        date: "October 19, 2020",
-        title: "Nostalgic Photos of Tourists In U.S. National Parks",
-        text: "Uri Loveild Golman and Helle Lewelild Golman are the authors of the book “The Unfinished World: A project and book they call their love letter to...",
-        source: "NATIONAL GEOGRAPHIC",
-        keyword: "Yellowstone",
-      },
-      {
-        id: "saved_article_4",
-        image: image4,
-        date: "November 4, 2020",
-        title: "Grand Teton Renews Historic Crest Trail",
-        text: "The linking together of the Cascade and Death Canyon Trails, Wyoming’s two most popular trails, will continue next summer, thanks to a grant from the National Park Service and the Wyoming Office of Outdoor Recreation.",
-        source: "NATIONAL PARKS TRAVELER",
-        keyword: "Parks",
-      },
-      {
-        id: "saved_article_5",
-        image: image5,
-        date: "March 16, 2020",
-        title: "Scientists Don't Know Why Polaris Is So Weird",
-        text: "Humans have long relied on the starry sky to push into new frontiers, but to the very edge of the Milky Way and back, way from home, how Even animals look to the stars to guide them.",
-        source: "TREEHUGGER",
-        keyword: "Photography",
-      },
-    ]);
+    const token = localStorage.getItem("jwt");
+    if (token) {
+      checkToken(token)
+        .then((res) => {
+          if (res.data) {
+            setIsLoggedIn(true);
+            setUsername(res.data.name);
+            return getSavedArticles();
+          } else {
+            setIsLoggedIn(false);
+            setUsername("");
+            localStorage.removeItem("jwt");
+            return Promise.reject("Invalid token or no user data.");
+          }
+        })
+        .then((articles) => {
+          setSavedArticles(articles);
+        })
+        .catch((err) => {
+          console.error("Token validation failed:", err);
+        });
+    }
   }, []);
 
-  const savedArticleIds = new Set(savedArticles.map((article) => article.id));
+  const savedArticleIds = React.useMemo(() => {
+    console.log(
+      "Updating savedArticleIds. Current count:",
+      savedArticles.length
+    );
+    return new Set(savedArticles.map((article) => article.url));
+  }, [savedArticles]);
 
   const handleToggleSavedArticle = useCallback(
     (articleToToggle) => {
-      if (isLoggedIn) {
-        setSavedArticles((prevSavedArticles) => {
-          const isCurrentlySaved = prevSavedArticles.some(
-            (article) => article.id === articleToToggle.id
-          );
-
-          if (isCurrentlySaved) {
-            console.log(`Removing article: ${articleToToggle.title}`);
-            return prevSavedArticles.filter(
-              (article) => article.id !== articleToToggle.id
-            );
-          } else {
-            console.log(`Saving article: ${articleToToggle.title}`);
-            const keywordToAdd = articleToToggle.keyword || "General";
-            return [
-              ...prevSavedArticles,
-              { ...articleToToggle, keyword: keywordToAdd },
-            ];
-          }
-        });
-      } else {
+      if (!isLoggedIn) {
         console.log("User not logged in. Please sign in to save articles.");
+        setIsLoginModalOpen(true);
+        return;
+      }
+
+      const isCurrentlySaved = savedArticles.some(
+        (article) => article.url === articleToToggle.url
+      );
+
+      if (isCurrentlySaved) {
+        console.log(`Removing article: ${articleToToggle.title}`);
+        const articleToDelete = savedArticles.find(
+          (article) => article.url === articleToToggle.url
+        );
+        deleteArticle(articleToDelete._id)
+          .then(() => {
+            setSavedArticles((prevSavedArticles) =>
+              prevSavedArticles.filter(
+                (article) => article.url !== articleToToggle.url
+              )
+            );
+          })
+          .catch((err) => console.error("Error deleting article:", err));
+      } else {
+        console.log(`Saving article: ${articleToToggle.title}`);
+        saveArticle(articleToToggle)
+          .then((newArticle) => {
+            setSavedArticles((prevSavedArticles) => [
+              ...prevSavedArticles,
+              newArticle,
+            ]);
+          })
+          .catch((err) => console.error("Error saving article:", err));
       }
     },
-    [isLoggedIn]
+    [isLoggedIn, savedArticles]
   );
 
-  const handleSearch = useCallback((query) => {
+  const handleSearch = useCallback(async (query) => {
+    if (!query) {
+      setApiError("Please enter a keyword");
+      setNewsArticles([]);
+      setHasSearched(true);
+      return;
+    }
+
     setHasSearched(true);
     setIsLoading(true);
     setNewsArticles([]);
     setIsNotFound(false);
+    setApiError(null);
 
-    setTimeout(() => {
-      let fetchedArticles = [];
-      if (
-        query &&
-        (query.toLowerCase() === "nature" ||
-          query.toLowerCase() === "yellowstone")
-      ) {
-        fetchedArticles = [
-          {
-            id: "search_article_nature_1",
-            image: image1,
-            date: "November 4, 2018",
-            title: "Everyone Needs a Special 'Sit Spot' in Nature",
-            text: "Ever since I read Richard Louv’s influential book, “Last Child in the Woods,” the idea of having a special “sit spot” has stuck with me.",
-            source: "TREEHUGGER",
-            keyword: "Nature",
-          },
-          {
-            id: "search_article_nature_2",
-            image: image2,
-            date: "February 19, 2019",
-            title: "Nature makes you better",
-            text: "We all know how good nature can make us feel. The tranquil sound of birds chirping and the gentle, green shade of a forest, the way dappled sunlight dances through leaves, can all lower blood pressure and reduce stress.",
-            source: "NATIONAL GEOGRAPHIC",
-            keyword: "Nature",
-          },
-          {
-            id: "search_article_nature_3",
-            image: image3,
-            date: "October 19, 2019",
-            title: "Grand Teton Renews Historic Crest Trail",
-            text: "The linking together of the Cascade and Death Canyon Trails, Wyoming’s two most popular trails, will continue next summer, thanks to a grant from the National Park Service and the Wyoming Office of Outdoor Recreation.",
-            source: "NATIONAL GEOGRAPHIC",
-            keyword: "Parks",
-          },
-        ];
-      }
+    try {
+      const apiResponse = await getNews(query);
 
-      setNewsArticles(fetchedArticles);
-      setIsLoading(false);
+      if (apiResponse.status === "ok" && apiResponse.articles) {
+        const validArticles = apiResponse.articles.filter(
+          (article) =>
+            article.title &&
+            article.description &&
+            article.url &&
+            article.urlToImage &&
+            article.publishedAt &&
+            article.source &&
+            article.source.name
+        );
 
-      if (fetchedArticles.length === 0) {
-        setIsNotFound(true);
+        const formattedArticles = validArticles.map((article) => ({
+          _id: article.url,
+          image: article.urlToImage,
+          date: article.publishedAt,
+          title: article.title,
+          text: article.description,
+          source: article.source.name,
+          url: article.url,
+          keyword: query,
+        }));
+
+        if (formattedArticles.length === 0) {
+          setIsNotFound(true);
+        } else {
+          setNewsArticles(formattedArticles);
+          setIsNotFound(false);
+        }
       } else {
-        setIsNotFound(false);
+        const errorMessage =
+          apiResponse.message || "An unexpected API response structure.";
+        console.error("NewsAPI Error:", errorMessage);
+        setApiError(errorMessage);
+        setNewsArticles([]);
       }
-    }, 2000);
+    } catch (err) {
+      console.error("Search error:", err);
+      setApiError(
+        "Sorry, something went wrong during the request. Please try again later."
+      );
+      setNewsArticles([]);
+      setIsNotFound(false);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
-  // Fonction de déconnexion
   const handleLogout = useCallback(() => {
-    setIsLoggedIn(false); // Change l'état de connexion à false
-    setUsername(""); // Efface le nom d'utilisateur (ou le réinitialise à une valeur par défaut)
-    setSavedArticles([]); // Efface les articles sauvegardés après déconnexion
-    navigate("/"); // Redirige l'utilisateur vers la page d'accueil
+    setIsLoggedIn(false);
+    setUsername("");
+    setSavedArticles([]);
+    localStorage.removeItem("jwt");
+    navigate("/");
     console.log("User logged out.");
   }, [navigate]);
+
+  const handleOpenLoginModal = () => {
+    setIsRegisterModalOpen(false);
+    setIsSuccessRegisterModalOpen(false);
+    setIsLoginModalOpen(true);
+  };
+
+  const handleCloseLoginModal = () => {
+    setIsLoginModalOpen(false);
+  };
+
+  const handleLogin = (email, password) => {
+    authorize(email, password)
+      .then((res) => {
+        if (res.token) {
+          localStorage.setItem("jwt", res.token);
+          return checkToken(res.token);
+        } else {
+          return Promise.reject("No token received.");
+        }
+      })
+      .then((userRes) => {
+        if (userRes.data) {
+          setIsLoggedIn(true);
+          setUsername(userRes.data.name);
+          return getSavedArticles();
+        } else {
+          return Promise.reject("No user data received.");
+        }
+      })
+      .then((articles) => {
+        setSavedArticles(articles);
+        setIsLoginModalOpen(false);
+        console.log("Login successful!");
+      })
+      .catch((err) => {
+        console.error("Login failed:", err);
+        setApiError("Login failed. Please check your credentials.");
+      });
+  };
+
+  const handleOpenRegisterModal = () => {
+    setIsLoginModalOpen(false);
+    setIsRegisterModalOpen(true);
+  };
+
+  const handleCloseRegisterModal = () => {
+    setIsRegisterModalOpen(false);
+  };
+
+  const handleRegister = (email, password, username) => {
+    console.log(
+      `Attempting to register with: ${email} / ${password} / ${username}`
+    );
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        setIsRegisterModalOpen(false);
+        setIsSuccessRegisterModalOpen(true);
+        console.log("Registration successful!");
+        resolve();
+      }, 1000);
+    });
+  };
+
+  const handleCloseSuccessRegisterModal = () => {
+    setIsSuccessRegisterModalOpen(false);
+  };
+
+  const handleSwitchToRegister = () => {
+    setIsLoginModalOpen(false);
+    setIsSuccessRegisterModalOpen(false);
+    setIsRegisterModalOpen(true);
+  };
+  const handleSwitchToLogin = () => {
+    setIsRegisterModalOpen(false);
+    setIsSuccessRegisterModalOpen(false);
+    setIsLoginModalOpen(true);
+  };
 
   return (
     <div className="app">
@@ -178,8 +262,8 @@ function App() {
         onSearch={handleSearch}
         isLoggedIn={isLoggedIn}
         username={username}
-        mainBgImage={mainBgImage}
-        onLogout={handleLogout} // <-- Passez la fonction de déconnexion au Header
+        onLogout={handleLogout}
+        onSignInClick={handleOpenLoginModal}
       />
 
       <Routes>
@@ -194,6 +278,7 @@ function App() {
               isLoggedIn={isLoggedIn}
               savedArticleIds={savedArticleIds}
               onSaveArticle={handleToggleSavedArticle}
+              apiError={apiError}
             />
           }
         />
@@ -212,27 +297,26 @@ function App() {
       </Routes>
 
       <Footer />
-      {/* Boutons temporaires pour le test */}
-      <div
-        style={{
-          position: "fixed",
-          bottom: "20px",
-          left: "20px",
-          backgroundColor: "white",
-          padding: "10px",
-          border: "1px solid gray",
-          zIndex: 100,
-        }}
-      >
-        <button onClick={() => setIsLoggedIn(!isLoggedIn)}>
-          {isLoggedIn ? "Log Out (Test Button)" : "Log In (for testing save)"}
-        </button>
-        {/* <button
-          onClick={() => console.log("Current Saved Articles:", savedArticles)}
-        >
-          Log Saved Articles
-        </button> */}
-      </div>
+
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={handleCloseLoginModal}
+        onLogin={handleLogin}
+        onSwitchToRegister={handleSwitchToRegister}
+      />
+
+      <RegisterModal
+        isOpen={isRegisterModalOpen}
+        onClose={handleCloseRegisterModal}
+        onRegister={handleRegister}
+        onSwitchToLogin={handleSwitchToLogin}
+      />
+
+      <SuccessRegisterModal
+        isOpen={isSuccessRegisterModalOpen}
+        onClose={handleCloseSuccessRegisterModal}
+        onSwitchToLogin={handleSwitchToLogin}
+      />
     </div>
   );
 }

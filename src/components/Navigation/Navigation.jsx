@@ -1,19 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./Navigation.css";
-import logoutIconDark from "../../assets/logout.svg";
+import logoutIconLigth from "../../assets/logout.svg";
+import logoutIconDark from "../../assets/logoutDark.svg";
 
-function Navigation({ isLoggedIn, username, isMainPage, onLogout }) {
+import menuIcon from "../../assets/menu.svg";
+import closeIcon from "../../assets/close.svg";
+import lightMenuIcon from "../../assets/menu_dark.svg";
+import lightCloseIcon from "../../assets/light_close.svg";
+
+function Navigation({
+  isLoggedIn,
+  username,
+  isMainPage,
+  onLogout,
+  onSignInClick,
+}) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const logoutIcon =
+    isMainPage && !isMenuOpen ? logoutIconLigth : logoutIconDark;
+
   return (
-    <nav className="navigation">
+    <nav className={`navigation ${!isMainPage ? "navigation--dark-mode" : ""}`}>
       <h2
         className={`navigation__logo ${
           !isMainPage ? "navigation__logo--dark" : ""
-        }`}
+        } ${isMenuOpen ? "navigation__logo--menu-open" : ""}`}
       >
         NewsExplorer
       </h2>
-      <ul className="navigation__links">
+
+      <button className="navigation__hamburger-btn" onClick={toggleMenu}>
+        <img
+          src={
+            isMenuOpen
+              ? isMainPage
+                ? closeIcon
+                : lightCloseIcon
+              : isMainPage
+              ? menuIcon
+              : lightMenuIcon
+          }
+          alt={isMenuOpen ? "Close menu" : "Open menu"}
+        />
+      </button>
+
+      <ul
+        className={`navigation__links ${
+          isMenuOpen ? "navigation__links--open" : ""
+        }`}
+      >
         <li>
           <NavLink
             to="/"
@@ -50,15 +91,15 @@ function Navigation({ isLoggedIn, username, isMainPage, onLogout }) {
             >
               {username}{" "}
               <span className="navigation__logout-icon">
-                <img src={logoutIconDark} alt="logout icon" />
-              </span>{" "}
-              {/* <-- AJOUT ICI */}
+                <img src={logoutIcon} alt="logout icon" />
+              </span>
             </button>
           ) : (
             <button
               className={`navigation__button ${
                 !isMainPage ? "navigation__button--dark" : ""
               }`}
+              onClick={onSignInClick}
             >
               Sign in
             </button>

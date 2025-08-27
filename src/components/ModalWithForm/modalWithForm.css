@@ -1,0 +1,231 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal__content {
+  background-color: #fff;
+  padding: 34px 36px;
+  border-radius: 16px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1001;
+  width: 430px;
+  max-width: 90%;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.modal__close-button {
+  position: absolute;
+  top: -35px;
+  right: -35px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  z-index: 1003;
+  width: 40px;
+  height: 40px;
+}
+
+.modal__close-button:hover {
+  opacity: 0.7;
+}
+
+.modal__close-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+.modal__title {
+  font-size: 24px;
+  font-weight: 900;
+  margin-bottom: 24px;
+  text-align: left;
+  color: rgba(0, 0, 0, 1);
+
+  font-family: "Roboto", sans-serif;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+
+.modal__content.modal__success-content .modal__title {
+  text-align: center;
+}
+
+.modal__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal__label {
+  font-size: 12px;
+  color: rgba(47, 113, 229, 1);
+  margin-bottom: 8px;
+  font-weight: 400;
+  display: block;
+  font-family: Inter, sans-serif;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+
+.modal__input {
+  width: 100%;
+
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #1a1b22;
+  box-sizing: border-box;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+
+  border-bottom: 1px solid rgb(196, 193, 193);
+  outline: none;
+}
+
+.modal__input::placeholder {
+  color: #b6bcbf;
+}
+
+.modal__submit-button {
+  background-color: rgba(230, 232, 235, 1);
+
+  height: 64px;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 30px;
+  font-family: Roboto, sans-serif;
+  margin-top: 8px;
+  margin-bottom: 14px;
+  cursor: pointer;
+  pointer-events: none;
+  transition: background-color 0.3s ease;
+  opacity: 0.5;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 0px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.modal__submit-button:not(:disabled) {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal__submit-button:disabled {
+  background: rgba(230, 232, 235, 1);
+  color: #c0c0c0;
+  opacity: 1;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.modal__submit-button:hover:not(:disabled) {
+  background-color: #347eff;
+}
+
+.modal__switch-link {
+  text-align: center;
+  font-size: 14px;
+  color: #1a1b22;
+  margin-top: 0;
+}
+
+.modal__switch-link span {
+  color: #2f71e5;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.modal__switch-link span:hover {
+  text-decoration: underline;
+}
+
+.modal__error-message {
+  color: rgba(255, 0, 0, 1);
+  font-family: Inter, sans-serif;
+
+  font-size: 12px;
+  text-align: left;
+  margin-top: -10px;
+  margin-bottom: 10px;
+
+  font-weight: 400;
+  font-size: 12px;
+
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+
+.modal__success-signin-link {
+  text-align: left;
+  font-size: 18px;
+  margin-top: 0;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  color: #2f71e5;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+
+.modal__success-signin-link span:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .modal__content {
+    position: absolute;
+    top: 56px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-width: none;
+    padding: 16px;
+    border-radius: 24px 24px 0 0;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .modal__close-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1003;
+    width: 24px;
+    height: 24px;
+  }
+  .modal__title {
+    margin-bottom: 20px;
+  }
+  .modal__input {
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+  .modal__submit-button {
+    padding: 12px 15px;
+    font-size: 16px;
+  }
+}

@@ -11,3 +11,10 @@
   font-weight: 400;
   font-style: normal;
 }
+
+@font-face {
+  font-family: "Inter";
+  src: url("../vendor/fonts/inter-400-regular.woff") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}

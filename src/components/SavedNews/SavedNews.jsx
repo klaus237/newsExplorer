@@ -1,7 +1,6 @@
 import React from "react";
 import NewsCardList from "../NewsCardList/NewsCardList";
 import "./SavedNews.css";
-//import trashIcon from '../../images/trash-icon.svg'; // Ensure path is correct
 
 function SavedNews({
   savedArticles = [],
@@ -42,8 +41,8 @@ function SavedNews({
           <NewsCardList
             articles={savedArticles}
             isLoggedIn={isLoggedIn}
-            isSavedPage={true} // <-- Set to true for this page
-            onSaveArticle={onSaveArticle} // This will now trigger the remove functionality
+            isSavedPage={true}
+            onSaveArticle={onSaveArticle}
             savedArticleIds={savedArticleIds}
           />
         </div>

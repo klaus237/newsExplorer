@@ -10,30 +10,32 @@ function Footer() {
         &copy; 2024 Supersite. Powered by News API
       </p>
       <nav className="footer__nav">
-        <a href="#" className="footer__link">
-          Home
-        </a>
-        <a href="#" className="footer__link">
+        <div className="footer__top-links">
+          <a href="#" className="footer__link">
+            Home
+          </a>
+          <div className="footer__social">
+            <a
+              href="https://github.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer__socialIcon"
+            >
+              <img src={githubIcon} alt="GitHub" />
+            </a>
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer__socialIcon"
+            >
+              <img src={facebookIcon} alt="Facebook" />
+            </a>
+          </div>
+        </div>
+        <a href="#" className="footer__link footer__link_tripleten">
           TripleTen
         </a>
-        <div className="footer__social">
-          <a
-            href="https://github.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="footer__socialIcon"
-          >
-            <img src={githubIcon} alt="GitHub" />
-          </a>
-          <a
-            href="https://facebook.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="footer__socialIcon"
-          >
-            <img src={facebookIcon} alt="Facebook" />
-          </a>
-        </div>
       </nav>
     </footer>
   );

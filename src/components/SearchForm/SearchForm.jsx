@@ -2,29 +2,29 @@ import React, { useState } from "react";
 import "./SearchForm.css";
 
 function SearchForm({ onSearch }) {
-  // Recevoir onSearch comme prop
-  const [query, setQuery] = useState(""); // État pour la valeur de l'input
+  const [query, setQuery] = useState("");
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // Empêche le rechargement de la page
+    e.preventDefault();
     if (query.trim()) {
-      // S'assurer que la requête n'est pas vide
-      onSearch(query); // Appelle la fonction de recherche passée en prop
+      onSearch(query);
     }
   };
 
   return (
     <form className="searchForm" onSubmit={handleSubmit}>
-      <input
-        type="text"
-        className="searchForm__input"
-        placeholder="Enter topic"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-      <button type="submit" className="searchForm__button">
-        Search
-      </button>
+      <div className="searchForm__container">
+        <input
+          type="text"
+          className="searchForm__input"
+          placeholder="Enter topic"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <button type="submit" className="searchForm__button">
+          Search
+        </button>
+      </div>
     </form>
   );
 }

@@ -4,12 +4,9 @@ import Navigation from "../Navigation/Navigation";
 import SearchForm from "../SearchForm/SearchForm";
 import "./Header.css";
 
-// Importez vos images de fond
 import mainBgImage from "../../assets/background.png";
-// import savedNewsBgImage from '../../images/saved-news-background-image.jpg'; // Si vous avez une image spécifique pour saved-news
 
-function Header({ onSearch, isLoggedIn, username, onLogout }) {
-  // <-- Ajoutez onLogout ici
+function Header({ onSearch, isLoggedIn, username, onLogout, onSignInClick }) {
   const location = useLocation();
   const isMainPage = location.pathname === "/";
 
@@ -24,7 +21,8 @@ function Header({ onSearch, isLoggedIn, username, onLogout }) {
         isLoggedIn={isLoggedIn}
         username={username}
         isMainPage={isMainPage}
-        onLogout={onLogout} // <-- Passez onLogout à Navigation
+        onLogout={onLogout}
+        onSignInClick={onSignInClick}
       />
       {isMainPage && (
         <div className="header__content">

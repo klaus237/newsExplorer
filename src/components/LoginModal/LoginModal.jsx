@@ -1,65 +1,79 @@
 import React, { useState } from "react";
-import "./LoginModal.css";
+import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
 function LoginModal({ isOpen, onClose, onLogin, onSwitchToRegister }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isEmailValid, setIsEmailValid] = useState(true);
+
+  const handleEmailValidation = (e) => {
+    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.target.value);
+    setIsEmailValid(isValid);
+  };
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+
+    handleEmailValidation(e);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onLogin(email, password); // Pass email and password to the login handler in App
+    onLogin(email, password);
+    onClose();
   };
 
-  if (!isOpen) {
-    return null; // Don't render if not open
-  }
-
   return (
-    <div className="modal">
-      <div className="modal__overlay" onClick={onClose}></div>{" "}
-      {/* Click outside to close */}
-      <div className="modal__content">
-        <button className="modal__close-button" onClick={onClose}>
-          &times; {/* 'x' icon for closing */}
+    <ModalWithForm
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Sign in"
+      switchLinkText="Sign up"
+      onSwitchLinkClick={onSwitchToRegister}
+    >
+      <form className="modal__form" onSubmit={handleSubmit}>
+        <label className="modal__label" htmlFor="email">
+          Email
+        </label>
+        <input
+          className="modal__input"
+          type="email"
+          id="email"
+          placeholder="Enter email"
+          value={email}
+          onChange={handleEmailChange}
+          onBlur={handleEmailValidation}
+          required
+        />
+        {!isEmailValid && email && (
+          <span className="modal__error-message">Invalid email address</span>
+        )}
+
+        <label className="modal__label" htmlFor="password">
+          Password
+        </label>
+        <input
+          className="modal__input"
+          type="password"
+          id="password"
+          placeholder="Enter password"
+          value={password}
+          onChange={handlePasswordChange}
+          required
+        />
+
+        <button
+          className="modal__submit-button"
+          type="submit"
+          disabled={!email || !password || !isEmailValid}
+        >
+          Sign in
         </button>
-        <h2 className="modal__title">Sign in</h2>
-        <form className="modal__form" onSubmit={handleSubmit}>
-          <label className="modal__label" htmlFor="email">
-            Email
-          </label>
-          <input
-            className="modal__input"
-            type="email"
-            id="email"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-
-          <label className="modal__label" htmlFor="password">
-            Password
-          </label>
-          <input
-            className="modal__input"
-            type="password"
-            id="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-
-          <button className="modal__submit-button" type="submit">
-            Sign in
-          </button>
-        </form>
-        <p className="modal__switch-link">
-          or <span onClick={onSwitchToRegister}>Sign up</span>{" "}
-          {/* Link to switch to register form */}
-        </p>
-      </div>
-    </div>
+      </form>
+    </ModalWithForm>
   );
 }
 

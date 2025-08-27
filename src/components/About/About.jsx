@@ -1,7 +1,7 @@
 import React from "react";
 import "./About.css";
 
-import authorImage from "../../assets/author-image.png"; // Importez votre image de fond
+import authorImage from "../../assets/klaus.jpg";
 
 function About() {
   return (
@@ -16,12 +16,18 @@ function About() {
       <div className="about__content">
         <h6 className="about__title">About the author</h6>
         <p className="about__text">
-          This block describes the project author. Here you should indicate your
-          name, what you do, and which development technologies you know.
+          My name is Klaus Lagom, and I am a Full Stack Developer with expertise
+          in Angular, React, PHP, Node.js, HTML5, JavaScript, and other modern
+          web technologies. I enjoy creating efficient and scalable web
+          applications that provide seamless user experiences
         </p>
         <p className="about__text">
-          You can also talk about your experience with TripleTen, what you
-          learned there, and how you can help potential customers.
+          During my time at TripleTen, I gained valuable experience working on
+          diverse projects, where I learned to implement best practices in
+          front-end and back-end development, and optimize applications for
+          performance and maintainability. This experience has strengthened my
+          skills and enables me to deliver high-quality solutions that meet
+          client needs and drive project success
         </p>
       </div>
     </section>
