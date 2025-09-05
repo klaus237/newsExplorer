@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./SearchForm.css";
 
 function SearchForm({ onSearch }) {
@@ -12,16 +12,16 @@ function SearchForm({ onSearch }) {
   };
 
   return (
-    <form className="searchForm" onSubmit={handleSubmit}>
-      <div className="searchForm__container">
+    <form className="search-form" onSubmit={handleSubmit}>
+      <div className="search-form__container">
         <input
           type="text"
-          className="searchForm__input"
+          className="search-form__input"
           placeholder="Enter topic"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        <button type="submit" className="searchForm__button">
+        <button type="submit" className="search-form__button">
           Search
         </button>
       </div>

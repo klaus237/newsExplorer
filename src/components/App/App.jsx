@@ -218,10 +218,10 @@ function App() {
       });
   };
 
-  const handleOpenRegisterModal = () => {
-    setIsLoginModalOpen(false);
-    setIsRegisterModalOpen(true);
-  };
+  // const handleOpenRegisterModal = () => {
+  //   setIsLoginModalOpen(false);
+  //   setIsRegisterModalOpen(true);
+  // };
 
   const handleCloseRegisterModal = () => {
     setIsRegisterModalOpen(false);

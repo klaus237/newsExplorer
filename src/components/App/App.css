@@ -1,6 +1,6 @@
 :global(body) {
   margin: 0;
-  font-family: "Roboto Slab", sans-serif;
+  font-family: "Roboto Slab", "Times New Roman", Times, serif;
   color: #333;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

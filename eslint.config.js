@@ -10,7 +10,10 @@ export default [
     files: ["**/*.{js,jsx}"],
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        process: "readonly", // ← ajoute cette ligne
+      },
       parserOptions: {
         ecmaVersion: "latest",
         ecmaFeatures: { jsx: true },
@@ -35,11 +38,14 @@ export default [
       ],
       "react/prop-types": 0,
     },
-    overrides: [
-      {
-        // Without this, `npx eslint .` doesn't run on jsx files.
-        files: ["*.js", "*.jsx"],
-      },
-    ],
+    // overrides: [
+    //   {
+    //     // Without this, `npx eslint .` doesn't run on jsx files.
+    //     files: ["*.js", "*.jsx"],
+    //   },
+    // ],
+  },
+  {
+    files: ["*.js", "*.jsx"],
   },
 ];

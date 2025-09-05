@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
 function LoginModal({ isOpen, onClose, onLogin, onSwitchToRegister }) {
@@ -6,13 +6,20 @@ function LoginModal({ isOpen, onClose, onLogin, onSwitchToRegister }) {
   const [password, setPassword] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(true);
 
+  useEffect(() => {
+    if (!isOpen) {
+      setEmail("");
+      setPassword("");
+      setIsEmailValid(true);
+    }
+  }, [isOpen]);
+
   const handleEmailValidation = (e) => {
     const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.target.value);
     setIsEmailValid(isValid);
   };
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
-
     handleEmailValidation(e);
   };
 

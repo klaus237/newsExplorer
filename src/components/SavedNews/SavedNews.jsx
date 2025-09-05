@@ -1,4 +1,3 @@
-import React from "react";
 import NewsCardList from "../NewsCardList/NewsCardList";
 import "./SavedNews.css";
 
@@ -25,19 +24,19 @@ function SavedNews({
   };
 
   return (
-    <section className="savedNews">
-      <div className="savedNews__header">
-        <h1 className="savedNews__title">Saved articles</h1>
-        <p className="savedNews__count">
+    <section className="saved-news">
+      <header className="saved-news__header">
+        <h1 className="saved-news__title">Saved articles</h1>
+        <p className="saved-news__count">
           {username}, you have {savedArticles.length} saved articles
         </p>
-        <p className="savedNews__keywords">
+        <p className="saved-news__keywords">
           By keywords: <strong>{formatKeywords()}</strong>
         </p>
-      </div>
+      </header>
 
       {savedArticles.length > 0 ? (
-        <div className="savedNews__articles">
+        <ul className="saved-news__articles">
           <NewsCardList
             articles={savedArticles}
             isLoggedIn={isLoggedIn}
@@ -45,10 +44,10 @@ function SavedNews({
             onSaveArticle={onSaveArticle}
             savedArticleIds={savedArticleIds}
           />
-        </div>
+        </ul>
       ) : (
-        <div className="savedNews__empty-state">
-          <p>You haven't saved any articles yet.</p>
+        <div className="saved-news__empty-state">
+          <p>You haven&apos;t saved any articles yet.</p>
           <p>Go to the Home page to find news and save them!</p>
         </div>
       )}

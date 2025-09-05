@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useState } from "react";
 import placeholderImage from "../../assets/placeholder.png";
 
 import notSaved from "../../assets/save-icon.svg";
@@ -16,14 +15,13 @@ function NewsCard({
   isSavedPage = false,
   keyword,
 }) {
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
   if (!article) {
     console.error("NewsCard was rendered with an undefined article prop.");
     return null;
   }
-
-  const location = useLocation();
-  const [showTooltip, setShowTooltip] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
 
   const formatDate = (isoDate) => {
     if (!isoDate) {
@@ -67,20 +65,22 @@ function NewsCard({
   }
 
   return (
-    <div className="newsCard">
+    <div className="news-card">
       <a href={article.url} target="_blank" rel="noopener noreferrer">
         <img
           src={articleImage}
           alt={article.title}
-          className="newsCard__image"
+          className="news-card__image"
         />
       </a>
 
-      {isSavedPage && keyword && <div className="newsCard__tag">{keyword}</div>}
+      {isSavedPage && keyword && (
+        <div className="news-card__tag">{keyword}</div>
+      )}
 
       <div
-        className={`newsCard__banner ${
-          isSavedPage ? "newsCard__banner--saved-page" : ""
+        className={`news-card__banner ${
+          isSavedPage ? "news-card__banner--saved-page" : ""
         }`}
         onMouseEnter={() => {
           setShowTooltip(true);
@@ -93,8 +93,8 @@ function NewsCard({
         onClick={handleBannerClick}
       >
         <span
-          className={`newsCard__tooltip ${
-            showTooltip && "newsCard__tooltip--visible"
+          className={`news-card__tooltip ${
+            showTooltip && "news-card__tooltip--visible"
           }`}
         >
           {getTooltipText()}
@@ -102,20 +102,20 @@ function NewsCard({
         <img
           src={icon}
           alt={isSavedPage ? "Remove article" : "Save article"}
-          className={`newsCard__saveIcon ${
-            isSavedPage ? "newsCard__saveIcon--trash" : ""
+          className={`news-card__save-icon ${
+            isSavedPage ? "news-card__save-icon--trash" : ""
           } ${
-            !isLoggedIn && !isSavedPage ? "newsCard__saveIcon--disabled" : ""
-          } ${isSaved && !isSavedPage ? "newsCard__saveIcon--saved" : ""}`}
+            !isLoggedIn && !isSavedPage ? "news-card__save-icon--disabled" : ""
+          } ${isSaved && !isSavedPage ? "news-card__save-icon--saved" : ""}`}
         />
       </div>
 
-      <div className="newsCard__content">
-        <p className="newsCard__date">{articleDate}</p>
-        <h3 className="newsCard__title">{article.title}</h3>
-        <p className="newsCard__text">{article.text}</p>
+      <div className="news-card__content">
+        <p className="news-card__date">{articleDate}</p>
+        <h3 className="news-card__title">{article.title}</h3>
+        <p className="news-card__text">{article.text}</p>
       </div>
-      <p className="newsCard__source">{article.source}</p>
+      <p className="news-card__source">{article.source}</p>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-.notFound {
+.not-found {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,19 +8,19 @@
   text-align: center;
 }
 
-.notFound__icon {
+.not-found__icon {
   font-size: 60px;
   margin-bottom: 24px;
 }
 
-.notFound__title {
+.not-found__title {
   font-size: 26px;
   font-weight: bold;
   margin-bottom: 16px;
   color: #1a1b22;
 }
 
-.notFound__text {
+.not-found__text {
   font-size: 18px;
   color: #b6bcbf;
   max-width: 350px;

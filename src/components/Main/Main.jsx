@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import About from "../About/About";
 import NewsCardList from "../NewsCardList/NewsCardList";
 import Preloader from "../Preloader/Preloader";
@@ -24,8 +24,8 @@ function Main({
   const renderContent = () => {
     if (apiError) {
       return (
-        <section className="main__newsResults">
-          <p className="main__errorMessage">{apiError}</p>
+        <section className="news-results">
+          <p className="news-results__errorMessage">{apiError}</p>
         </section>
       );
     }
@@ -43,8 +43,8 @@ function Main({
       const hasMoreArticles = newsArticles.length > cardsToShow;
 
       return (
-        <section className="main__newsResults">
-          <h2 className="main__newsTitle">Search results</h2>
+        <section className="news-results">
+          <h2 className="news-results__title">Search results</h2>
           <NewsCardList
             articles={displayedArticles}
             isLoggedIn={isLoggedIn}
@@ -52,7 +52,10 @@ function Main({
             onSaveArticle={onSaveArticle}
           />
           {hasMoreArticles && (
-            <button className="main__showMoreButton" onClick={handleShowMore}>
+            <button
+              className="news-results__show-more-button"
+              onClick={handleShowMore}
+            >
               Show more
             </button>
           )}

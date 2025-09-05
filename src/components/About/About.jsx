@@ -1,4 +1,3 @@
-import React from "react";
 import "./About.css";
 
 import authorImage from "../../assets/klaus.jpg";
@@ -6,7 +5,7 @@ import authorImage from "../../assets/klaus.jpg";
 function About() {
   return (
     <section className="about">
-      <div className="about__imageContainer">
+      <div className="about__image-container">
         <img
           src={authorImage}
           alt="About the author"

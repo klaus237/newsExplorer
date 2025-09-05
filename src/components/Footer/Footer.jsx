@@ -1,4 +1,3 @@
-import React from "react";
 import "./Footer.css";
 import githubIcon from "../../assets/github-icon.svg";
 import facebookIcon from "../../assets/facebook-icon.svg";
@@ -19,7 +18,7 @@ function Footer() {
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="footer__socialIcon"
+              className="footer__social-icon"
             >
               <img src={githubIcon} alt="GitHub" />
             </a>
@@ -27,13 +26,13 @@ function Footer() {
               href="https://facebook.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="footer__socialIcon"
+              className="footer__social-icon"
             >
               <img src={facebookIcon} alt="Facebook" />
             </a>
           </div>
         </div>
-        <a href="#" className="footer__link footer__link_tripleten">
+        <a href="#" className="footer__link footer__link--tripleten">
           TripleTen
         </a>
       </nav>

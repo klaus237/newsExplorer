@@ -1,4 +1,3 @@
-import React from "react";
 import NewsCard from "../NewsCard/NewsCard";
 import "./NewsCardList.css";
 
@@ -18,19 +17,20 @@ function NewsCardList({
   }
 
   return (
-    <div className="newsCardList">
+    <ul className="news-card-list">
       {filteredArticles.map((article) => (
-        <NewsCard
-          key={article._id}
-          isSaved={savedArticleIds.has(article._id)}
-          article={article}
-          isLoggedIn={isLoggedIn}
-          onSaveArticle={onSaveArticle}
-          isSavedPage={isSavedPage}
-          keyword={article.keyword}
-        />
+        <li key={article._id} className="news-card-list__item">
+          <NewsCard
+            isSaved={savedArticleIds.has(article._id)}
+            article={article}
+            isLoggedIn={isLoggedIn}
+            onSaveArticle={onSaveArticle}
+            isSavedPage={isSavedPage}
+            keyword={article.keyword}
+          />
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
 
