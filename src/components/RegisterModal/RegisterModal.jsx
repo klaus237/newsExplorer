@@ -1,95 +1,96 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
-function RegisterModal({ isOpen, onClose, onRegister }) {
-  const [name, setName] = useState("");
-  const [avatar, setAvatar] = useState("");
+function RegisterModal({ isOpen, onClose, onRegister, onSwitchToLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    if (isOpen) {
-      setName("");
-      setAvatar("");
+    if (!isOpen) {
       setEmail("");
       setPassword("");
+      setUsername("");
+      setErrorMessage("");
     }
   }, [isOpen]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onRegister({ name, avatar, email, password });
-  };
+    setErrorMessage("");
 
-  const isFormValid =
-    name.trim() !== "" &&
-    email.trim() !== "" &&
-    password.trim() !== "" &&
-    avatar.trim() !== "";
+    if (!email || !password || !username) {
+      setErrorMessage("Please fill in all fields.");
+      return;
+    }
+
+    if (email === "example@test.com") {
+      setErrorMessage("This email is not available");
+      return;
+    }
+
+    onRegister(email, password, username);
+  };
 
   return (
     <ModalWithForm
-      title="Sign Up"
       isOpen={isOpen}
       onClose={onClose}
-      onSubmit={handleSubmit}
-      buttonText="Register"
-      secondaryButtonText="Sign In"
-      onSecondaryClick={() => {
-        onClose();
-        const event = new CustomEvent("open-login-modal");
-        window.dispatchEvent(event);
-      }}
-      isSubmitDisabled={!isFormValid}
+      title="Sign up"
+      switchLinkText="Sign in"
+      onSwitchLinkClick={onSwitchToLogin}
     >
-      <label htmlFor="name" className="modal__label">
-        Name
+      <form className="modal__form" onSubmit={handleSubmit}>
+        <label className="modal__label" htmlFor="register-email">
+          Email
+        </label>
         <input
-          type="text"
-          id="name"
           className="modal__input"
-          placeholder="Your name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-      </label>
-      <label htmlFor="avatar" className="modal__label">
-        Avatar URL
-        <input
-          type="url"
-          id="avatar"
-          className="modal__input"
-          placeholder="https://example.com/avatar.jpg"
-          value={avatar}
-          onChange={(e) => setAvatar(e.target.value)}
-          required
-        />
-      </label>
-      <label htmlFor="email" className="modal__label">
-        Email
-        <input
           type="email"
-          id="email"
-          className="modal__input"
-          placeholder="you@example.com"
+          id="register-email"
+          placeholder="Enter email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-      </label>
-      <label htmlFor="password" className="modal__label">
-        Password
+
+        <label className="modal__label" htmlFor="register-password">
+          Password
+        </label>
         <input
-          type="password"
-          id="password"
           className="modal__input"
+          type="password"
+          id="register-password"
           placeholder="Enter password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-      </label>
+
+        <label className="modal__label" htmlFor="register-username">
+          Username
+        </label>
+        <input
+          className="modal__input"
+          type="text"
+          id="register-username"
+          placeholder="Enter your username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+        />
+
+        {errorMessage && <p className="modal__error-message">{errorMessage}</p>}
+
+        <button
+          className="modal__submit-button"
+          type="submit"
+          disabled={!email || !password || !username}
+        >
+          Sign up
+        </button>
+      </form>
     </ModalWithForm>
   );
 }

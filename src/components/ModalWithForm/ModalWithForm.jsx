@@ -1,59 +1,35 @@
-import "./modalWithForm.css";
-import closeIcon from "../../assets/union.png";
+import "./ModalWithForm.css";
+import closeIcon from "../../assets/close-icon.svg";
 
 function ModalWithForm({
-  title,
   isOpen,
   onClose,
-  onSubmit,
-  buttonText,
+  title,
   children,
-  secondaryButtonText,
-  onSecondaryClick,
-  isSubmitDisabled = false,
+  switchLinkText,
+  onSwitchLinkClick,
 }) {
-  return (
-    <div className={`modal ${isOpen ? "modal_opened" : ""}`}>
-      <div className="modal__content">
-        <h2 className="modal__title">{title}</h2>
-        <img
-          src={closeIcon}
-          alt="close"
-          className="modal__close"
-          onClick={onClose}
-          style={{ cursor: "pointer" }}
-        />
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            onSubmit(e);
-          }}
-          className="modal__form"
-        >
-          {children}
-          <div className="modal__button-group">
-            <button
-              type="submit"
-              className="modal__submit"
-              disabled={isSubmitDisabled}
-            >
-              {buttonText}
-            </button>
+  if (!isOpen) {
+    return null;
+  }
 
-            {secondaryButtonText && onSecondaryClick && (
-              <>
-                <span className="modal__or">or</span>
-                <button
-                  type="button"
-                  className="modal__secondary-button"
-                  onClick={onSecondaryClick}
-                >
-                  {secondaryButtonText}
-                </button>
-              </>
-            )}
-          </div>
-        </form>
+  return (
+    <div className="modal">
+      <div className="modal__overlay" onClick={onClose}></div>
+
+      <div className="modal__content">
+        {/* Le bouton est maintenant à l'intérieur de modal__content */}
+        <button className="modal__close-button" onClick={onClose}>
+          <img src={closeIcon} alt="Close" className="modal__close-icon" />
+        </button>
+
+        <h2 className="modal__title">{title}</h2>
+        {children}
+        {switchLinkText && onSwitchLinkClick && (
+          <p className="modal__switch-link">
+            or <span onClick={onSwitchLinkClick}>{switchLinkText}</span>
+          </p>
+        )}
       </div>
     </div>
   );

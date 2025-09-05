@@ -1,11 +1,8 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// https://vite.dev/config/
 export default defineConfig({
-  base: "/se_project_react/",
   plugins: [react()],
-  server: {
-    port: 3000,
-  },
+  // Utilisez un chemin de base cohérent avec le nom de votre dépôt
+  base: "/se_project_react/",
 });

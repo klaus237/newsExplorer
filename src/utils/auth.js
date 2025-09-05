@@ -1,32 +1,31 @@
-import { checkResponse } from "./Api";
-const BASE_URL = "http://localhost:3001";
-
-export const signup = ({ name, avatar, email, password }) => {
-  return fetch(`${BASE_URL}/signup`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ name, avatar, email, password }),
-  }).then(checkResponse);
-};
-
-export const signin = ({ email, password }) => {
-  return fetch(`${BASE_URL}/signin`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password }),
-  }).then(checkResponse);
+export const authorize = (email, password) => {
+  console.log(`Simulating login for: ${email}`);
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (email && password) {
+        resolve({ token: "a-fake-jwt-token-from-the-server" });
+      } else {
+        reject(new Error("Email and password are required."));
+      }
+    }, 500);
+  });
 };
 
 export const checkToken = (token) => {
-  return fetch(`${BASE_URL}/users/me`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  }).then(checkResponse);
+  console.log(`Simulating token check for: ${token}`);
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (token === "a-fake-jwt-token-from-the-server") {
+        resolve({
+          data: {
+            name: "Elise",
+            email: "elise@example.com",
+            _id: "fake-user-id-12345",
+          },
+        });
+      } else {
+        reject(new Error("Invalid token."));
+      }
+    }, 500);
+  });
 };

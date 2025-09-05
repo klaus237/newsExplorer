@@ -1,0 +1,32 @@
+.modal__content {
+  width: 430px;
+  max-width: 90%;
+  padding: 24px 36px;
+  text-align: center;
+}
+
+.modal__text {
+  font-size: 24px;
+  font-weight: 900;
+  margin-bottom: 24px;
+  text-align: center;
+  color: #1a1b22;
+  line-height: 1.2;
+}
+
+.modal__success-message {
+  font-size: 18px;
+  color: #1a1b22;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.modal__success-message span {
+  color: #2f71e5;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.modal__success-message span:hover {
+  text-decoration: underline;
+}

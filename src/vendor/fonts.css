@@ -1,6 +1,20 @@
 @font-face {
-  font-family: "Cabinet Grotesk";
-  src: url("../vendor/fonts/CabinetGrotesk-Regular.otf") format("opentype");
+  font-family: "Roboto Slab";
+  src: url("../vendor/fonts/roboto-slab-400-regular.woff") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("../vendor/fonts/roboto-400-regular.woff") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../vendor/fonts/inter-400-regular.woff") format("opentype");
   font-weight: 400;
   font-style: normal;
 }
